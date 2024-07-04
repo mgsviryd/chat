@@ -11,11 +11,11 @@ Before running in IntelliJ IDEA change Run/Debug configuration (click ChatApplic
 
 Override configuration properties:
 
-| Name                       | Value                                                                                                                           |
+| Name                       | Value (for example)                                                                                                                         |
 |----------------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | SPRING_DATASOURCE_URL      | jdbc:mysql://localhost:3306/database?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true 
-| SPRING_DATASOURCE_NAME     | name of your database                                                                                                           
-| SPRING_DATASOURCE_PASSWORD | password to your database                                                                                                       
+| SPRING_DATASOURCE_NAME     | root                                                                                                                            
+| SPRING_DATASOURCE_PASSWORD | ****                                                                                                                            
 
 
 
