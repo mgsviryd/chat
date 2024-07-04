@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: chat
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    #spring.jpa.hibernate.ddl-auto=update
+    #instead above
+    jpa:
+      generate-ddl: false
+      show-sql: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: false
+          generate_statistics: false
+          jdbc:
+            batch_size: 20
+            order_updates: true
+      database: mysql
