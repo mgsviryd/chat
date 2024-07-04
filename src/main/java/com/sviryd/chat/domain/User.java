@@ -22,13 +22,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@ToString(of = {"id", "username", "name", "male"})
-@EqualsAndHashCode(of = {"username", "name", "male"})
+@ToString(of = {"id", "username", "male"})
+@EqualsAndHashCode(of = {"username", "male"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {"messages"})
+@JsonIgnoreProperties(value = {"authorMessages"})
 @Entity
 @Table(name = "usr", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -43,10 +43,6 @@ public class User implements UserDetails, Serializable {
     @NonNull
     @JsonView(Views.Username.class)
     private String username;
-
-    @NonNull
-    @JsonView(Views.Name.class)
-    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
