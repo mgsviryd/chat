@@ -21,3 +21,7 @@ spring:
           batch_size: 20
           order_updates: true
     database: mysql
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
