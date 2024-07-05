@@ -1,11 +1,11 @@
 package com.sviryd.chat.controller.rest;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sviryd.chat.domain.User;
 import com.sviryd.chat.domain.Views;
 import com.sviryd.chat.domain.type.Male;
 import com.sviryd.chat.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +36,8 @@ public class UserRestController {
 
     @GetMapping("/init")
     public HashMap<Object, Object> isAuthenticated(
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal User user,
+            Principal principal
     ) {
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", user != null);
@@ -47,8 +47,9 @@ public class UserRestController {
     @PostMapping("/auth")
     public HashMap<Object, Object> saveAndLogin(
             @RequestParam(value = "name") String username,
-            @RequestParam(value = "sex") Male male
-            ) {
+            @RequestParam(value = "sex") Male male,
+            HttpSession session
+    ) {
         User user = new User();
         user.setUsername(username);
         user.setMale(male);
@@ -60,6 +61,7 @@ public class UserRestController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, DEFAULT_PASSWORD);
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", true);
         return data;
