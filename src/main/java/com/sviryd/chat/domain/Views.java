@@ -7,9 +7,6 @@ public final class Views {
     public interface Username {
     }
 
-    public interface Name {
-    }
-
     public interface CreationLDT {
     }
 
@@ -19,7 +16,10 @@ public final class Views {
     public interface Enabled {
     }
 
-    public interface Users extends Id, Name, Male {
+    public interface User extends Id, Username, Male {
+    }
+
+    public interface Users extends Id, Username, Male {
     }
 
 

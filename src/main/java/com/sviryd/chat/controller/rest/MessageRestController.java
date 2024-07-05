@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +26,13 @@ public class MessageRestController {
 
     @GetMapping("/messages")
     @JsonView({Views.Messages.class})
-    public HashMap<Object, Object> getOffsetBasePage(
+    public HashMap<Object, Object> getOffsetBasedPage(
             @RequestParam(value = "offset", defaultValue = "0", required = false) long offset,
             @RequestParam(value = "limit", defaultValue = "100", required = false) int limit
     ) {
         Pageable pageable = new OffsetBasedPageRequest(offset, limit, BY_CREATION_LDT_ASC);
         Page<Message> page = messageService.getPage(pageable);
-        List<Message> messages = page.getContent();
+        List<Message> messages = new ArrayList<>(page.getContent());
         messages.sort(Comparator.comparing(Message::getCreationLDT).reversed());
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", true);
@@ -40,7 +41,9 @@ public class MessageRestController {
         return data;
     }
 
+
     @PostMapping("/messages")
+    @JsonView({Views.Message.class})
     public Message save(
             @AuthenticationPrincipal User user,
             @RequestBody String text

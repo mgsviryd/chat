@@ -1,6 +1,8 @@
 package com.sviryd.chat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -18,18 +20,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @ToString(of = {"id", "username", "male"})
-@EqualsAndHashCode(of = {"username", "male"})
+@EqualsAndHashCode(of = {"username", "male"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @JsonIgnoreProperties(value = {"authorMessages"})
+@JsonPropertyOrder({ "id", "username", "male"})
 @Entity
 @Table(name = "usr", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -44,6 +44,7 @@ public class User implements UserDetails, Serializable {
 
     @NonNull
     @JsonView(Views.Username.class)
+    @JsonProperty("name")
     private String username;
 
     @Enumerated(EnumType.STRING)

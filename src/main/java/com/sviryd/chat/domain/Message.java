@@ -1,6 +1,8 @@
 package com.sviryd.chat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,6 +12,7 @@ import com.sviryd.chat.converter.LocalDateTimeToTimestampConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,19 +26,16 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-@JsonIgnoreProperties(value = {""}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {}, ignoreUnknown = true)
+@JsonPropertyOrder({"id", "creationLDT", "authorId", "message"})
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"author_id", "creationldt",}))
+@Table
 public class Message implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
-//    @Type(type = "uuid-char")
-//    @DocumentId
+    @UuidGenerator
     @JsonView(Views.Id.class)
     private UUID id;
 
@@ -48,12 +48,14 @@ public class Message implements Serializable {
     @Column(name = "author_id", updatable = false, insertable = false)
     private Long authorId;
 
+
     @CreationTimestamp
     @Convert(converter = LocalDateTimeToTimestampConverter.class)
     @JsonView(Views.CreationLDT.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime creationLDT;
+    @JsonProperty("time")
+    private LocalDateTime creationLDT = LocalDateTime.now();
 
     @Column(length = 255)
     @JsonView(Views.Message.class)
