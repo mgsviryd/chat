@@ -5,7 +5,7 @@
       <param>
         <option name="enabled" value="true" />
         <option name="name" value="SPRING_DATASOURCE_URL" />
-        <option name="value" value="jdbc:mysql://localhost:3306/chat?serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true" />
+        <option name="value" value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE;MODE=MYSQL;" />
       </param>
       <param>
         <option name="enabled" value="true" />

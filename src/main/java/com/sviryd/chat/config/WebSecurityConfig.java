@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth").permitAll()
                                 .requestMatchers("/init").permitAll()
+                                .requestMatchers("/h2-console").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/messages").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/messages").authenticated()
                                 .anyRequest().authenticated()
