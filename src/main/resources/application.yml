@@ -21,6 +21,7 @@ spring:
           batch_size: 20
           order_updates: true
     database: h2
+    open-in-view: false
   session:
     jdbc:
       initialize-schema: always

@@ -14,6 +14,7 @@ import com.sviryd.chat.domain.type.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,14 +23,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@ToString(of = {"id", "username", "male"})
-@EqualsAndHashCode(of = {"username", "male"}, callSuper = false)
+@ToString(of = {"id", "username", "gender"})
+@EqualsAndHashCode(of = {"username", "gender"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @JsonIgnoreProperties(value = {"authorMessages"})
-@JsonPropertyOrder({ "id", "username", "male"})
 @Entity
 @Table(name = "usr", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -44,7 +44,6 @@ public class User implements UserDetails, Serializable {
 
     @NonNull
     @JsonView(Views.Username.class)
-    @JsonProperty("name")
     private String username;
 
     @Enumerated(EnumType.STRING)
