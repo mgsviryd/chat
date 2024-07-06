@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.sviryd.chat.converter.LocalDateTimeToTimestampConverter;
-import com.sviryd.chat.domain.type.Male;
+import com.sviryd.chat.domain.type.Gender;
 import com.sviryd.chat.domain.type.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,8 +49,8 @@ public class User implements UserDetails, Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
-    @JsonView(Views.Male.class)
-    private Male male;
+    @JsonView(Views.Gender.class)
+    private Gender gender;
 
     @CreationTimestamp
     @Convert(converter = LocalDateTimeToTimestampConverter.class)

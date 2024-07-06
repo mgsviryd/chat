@@ -1,9 +1,9 @@
 package com.sviryd.chat.controller.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.sviryd.chat.domain.User;
-import com.sviryd.chat.domain.Views;
-import com.sviryd.chat.domain.type.Male;
+import com.sviryd.chat.domain.type.Gender;
+import com.sviryd.chat.dto.UserDTO;
+import com.sviryd.chat.dto.UsersDTO;
 import com.sviryd.chat.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,8 +35,7 @@ public class UserRestController {
 
     @GetMapping("/init")
     public HashMap<Object, Object> isAuthenticated(
-            @AuthenticationPrincipal User user,
-            Principal principal
+            @AuthenticationPrincipal User user
     ) {
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", user != null);
@@ -47,12 +45,12 @@ public class UserRestController {
     @PostMapping("/auth")
     public HashMap<Object, Object> saveAndLogin(
             @RequestParam(value = "name") String username,
-            @RequestParam(value = "sex") Male male,
+            @RequestParam(value = "sex") Gender gender,
             HttpSession session
     ) {
         User user = new User();
         user.setUsername(username);
-        user.setMale(male);
+        user.setGender(gender);
         user.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
         User userDB = userService.findByUsername(username);
         if (userDB == null) {
@@ -68,12 +66,12 @@ public class UserRestController {
     }
 
     @GetMapping("/users")
-    @JsonView({Views.Users.class})
-    public HashMap<Object, Object> getUsers() {
-        HashMap<Object, Object> data = new HashMap<>();
+    public UsersDTO getUsers() {
         List<User> users = userService.findAll(BY_CREATION_LDT_DESC);
-        data.put("result", true);
-        data.put("data", users);
-        return data;
+        List<UserDTO> dtos = users.stream().map(UserDTO::toDTO).toList();
+        return UsersDTO.builder()
+                .result(true)
+                .data(dtos)
+                .build();
     }
 }

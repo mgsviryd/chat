@@ -1,9 +1,9 @@
 package com.sviryd.chat.controller.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.sviryd.chat.domain.Message;
 import com.sviryd.chat.domain.User;
-import com.sviryd.chat.domain.Views;
+import com.sviryd.chat.dto.MessageDTO;
+import com.sviryd.chat.dto.MessagesDTO;
 import com.sviryd.chat.service.MessageService;
 import com.sviryd.chat.util.OffsetBasedPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -25,8 +24,7 @@ public class MessageRestController {
     private MessageService messageService;
 
     @GetMapping("/messages")
-    @JsonView({Views.Messages.class})
-    public HashMap<Object, Object> getOffsetBasedPage(
+    public MessagesDTO getOffsetBasedPage(
             @RequestParam(value = "offset", defaultValue = "0", required = false) long offset,
             @RequestParam(value = "limit", defaultValue = "100", required = false) int limit
     ) {
@@ -34,23 +32,25 @@ public class MessageRestController {
         Page<Message> page = messageService.getPage(pageable);
         List<Message> messages = new ArrayList<>(page.getContent());
         messages.sort(Comparator.comparing(Message::getCreationLDT).reversed());
-        HashMap<Object, Object> data = new HashMap<>();
-        data.put("result", true);
-        data.put("count", messages.size());
-        data.put("data", messages);
-        return data;
+        List<MessageDTO> dtos = messages.stream().map(MessageDTO::toDTO).toList();
+        return MessagesDTO.builder()
+                .result(true)
+                .count(dtos.size())
+                .data(dtos)
+                .build();
     }
 
 
     @PostMapping("/messages")
-    @JsonView({Views.Message.class})
-    public Message save(
+    public MessageDTO save(
             @AuthenticationPrincipal User user,
             @RequestBody String text
     ) {
         Message message = new Message();
         message.setAuthor(user);
-        message.setMessage(text);
-        return messageService.save(message);
+        message.setAuthorId(user.getId());
+        message.setText(text);
+        message = messageService.save(message);
+        return MessageDTO.toDTO(message);
     }
 }

@@ -1,0 +1,33 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" />
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="SPRING_DATASOURCE_URL" />
+        <option name="value" value="jdbc:mysql://localhost:3306/chat?serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true" />
+      </param>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="SPRING_DATASOURCE_USERNAME" />
+        <option name="value" value="root" />
+      </param>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="SPRING_DATASOURCE_PASSWORD" />
+        <option name="value" value="Mikhail!2000" />
+      </param>
+    </additionalParameters>
+    <module name="chat" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.sviryd.chat.ChatApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.sviryd.chat.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

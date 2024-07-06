@@ -1,4 +1,4 @@
-POST http://localhost:8080/auth?name=Pavel&sex=M
+POST http://localhost:8080/auth?name=Mikl&sex=M
 Content-Type: application/json
 
 ###
@@ -16,7 +16,7 @@ Content-Type: application/json
 hello
 
 ###
-GET http://localhost:8080/messages?offset=0&limit=50
+GET http://localhost:8080/messages?offset=1&limit=1
 Accept: application/json
 
 ###

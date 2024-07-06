@@ -47,8 +47,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth").permitAll()
                                 .requestMatchers("/init").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/messages").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/messages").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/messages").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/messages").authenticated()
                                 .anyRequest().authenticated()
                 );
 
