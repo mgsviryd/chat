@@ -19,7 +19,7 @@ GET http://localhost:8080/messages?offset=0&limit=50
 Accept: application/json
 
 ###
-GET http://localhost:8080/other
+GET http://localhost:8080/404
 Accept: application/json
 
 ###
