@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class MessageService {
     private final MessageRepo messageRepo;
 
-    public MessageService(MessageRepo messageRepo) {
+    public MessageService(final MessageRepo messageRepo) {
         this.messageRepo = messageRepo;
     }
 

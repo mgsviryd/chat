@@ -30,7 +30,7 @@ public class UserRestController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    public UserRestController(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserService userService) {
+    public UserRestController(final PasswordEncoder passwordEncoder, final AuthenticationManager authenticationManager, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.userService = userService;

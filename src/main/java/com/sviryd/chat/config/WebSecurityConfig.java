@@ -22,10 +22,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
     private final UserService userService;
 
-    public WebSecurityConfig(UserService userService) {
+    public WebSecurityConfig(final UserService userService) {
         this.userService = userService;
     }
 
@@ -64,7 +63,6 @@ public class WebSecurityConfig {
         http.authenticationProvider(authProvider());
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {

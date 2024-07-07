@@ -12,7 +12,7 @@ import java.util.List;
 public class UserService {
     private final UserRepo userRepo;
 
-    public UserService(UserRepo userRepo) {
+    public UserService(final UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
