@@ -1,9 +1,6 @@
 package com.sviryd.chat.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -14,14 +11,16 @@ import com.sviryd.chat.domain.type.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @ToString(of = {"id", "username", "gender"})
 @EqualsAndHashCode(of = {"username", "gender"}, callSuper = false)
@@ -39,21 +38,17 @@ public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.Id.class)
     private Long id;
 
     @NonNull
-    @JsonView(Views.Username.class)
     private String username;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 1)
-    @JsonView(Views.Gender.class)
     private Gender gender;
 
     @CreationTimestamp
     @Convert(converter = LocalDateTimeToTimestampConverter.class)
-    @JsonView(Views.CreationLDT.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime creationLDT = LocalDateTime.now();
@@ -61,9 +56,7 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Column(nullable = false, columnDefinition = "BIT", length = 1)
-    @JsonView(Views.Enabled.class)
     private boolean enabled;
-
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

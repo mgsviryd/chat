@@ -2,7 +2,6 @@ package com.sviryd.chat.config;
 
 import com.sviryd.chat.provider.AuthProvider;
 import com.sviryd.chat.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,8 +23,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Bean
     public AuthProvider authProvider() {
@@ -50,6 +52,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/init/**").permitAll()
+                                .requestMatchers("/users/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/messages/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/messages/**").authenticated()
                                 .requestMatchers(toH2Console()).permitAll()
@@ -61,6 +64,7 @@ public class WebSecurityConfig {
         http.authenticationProvider(authProvider());
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {

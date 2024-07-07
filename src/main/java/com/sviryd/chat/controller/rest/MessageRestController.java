@@ -6,7 +6,6 @@ import com.sviryd.chat.dto.MessageDTO;
 import com.sviryd.chat.dto.MessagesDTO;
 import com.sviryd.chat.service.MessageService;
 import com.sviryd.chat.util.OffsetBasedPageRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,8 +19,11 @@ import java.util.List;
 @RestController
 public class MessageRestController {
     private static final Sort BY_CREATION_LDT_ASC = Sort.by("creationLDT").ascending();
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
+
+    public MessageRestController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping("/messages")
     public MessagesDTO getOffsetBasedPage(
