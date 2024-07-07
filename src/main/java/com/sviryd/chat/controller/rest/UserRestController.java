@@ -6,7 +6,6 @@ import com.sviryd.chat.dto.UserDTO;
 import com.sviryd.chat.dto.UsersDTO;
 import com.sviryd.chat.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,14 +23,18 @@ import java.util.List;
 
 @RestController
 public class UserRestController {
+    private static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
     private static final String DEFAULT_PASSWORD = "123456";
     private static final Sort BY_CREATION_LDT_DESC = Sort.by("creationLDT").descending();
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+
+    public UserRestController(final PasswordEncoder passwordEncoder, final AuthenticationManager authenticationManager, UserService userService) {
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+    }
 
     @GetMapping("/init")
     public HashMap<Object, Object> isAuthenticated(
@@ -59,7 +62,7 @@ public class UserRestController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, DEFAULT_PASSWORD);
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+        session.setAttribute(SPRING_SECURITY_CONTEXT, SecurityContextHolder.getContext());
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", true);
         return data;
