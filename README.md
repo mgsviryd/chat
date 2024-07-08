@@ -17,5 +17,8 @@ Override configuration properties:
 | SPRING_DATASOURCE_NAME     | root                                                                                                                            
 | SPRING_DATASOURCE_PASSWORD | ****                                                                                                                            
 
+## Run/Debug
+
+Second and next Run/Debug with open connection through Database connection in IntelliJ IDEA or Workbench can lead to lost first user authentication. Try to authenticate user again or close/remove the mentioned connections and re-Run/Debug.
 
 
