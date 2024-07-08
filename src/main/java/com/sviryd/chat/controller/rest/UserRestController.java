@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 public class UserRestController {
-    private static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
+    private static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
     private static final String DEFAULT_PASSWORD = "123456";
     private static final Sort BY_CREATION_LDT_DESC = Sort.by("creationLDT").descending();
     private final PasswordEncoder passwordEncoder;
@@ -62,7 +62,7 @@ public class UserRestController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, DEFAULT_PASSWORD);
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute(SPRING_SECURITY_CONTEXT, SecurityContextHolder.getContext());
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", true);
         return data;

@@ -41,6 +41,7 @@ public class Message implements Serializable {
     private Long authorId;
 
 
+    @Builder.Default
     @CreationTimestamp
     @Convert(converter = LocalDateTimeToTimestampConverter.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

@@ -48,7 +48,6 @@ public class WebSecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/init/**").permitAll()
                                 .requestMatchers("/users/**").permitAll()

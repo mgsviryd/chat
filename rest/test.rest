@@ -1,3 +1,7 @@
+POST http://localhost:8080/auth?name=Mikl&sex=M
+Content-Type: application/json
+
+###
 POST http://localhost:8080/auth?name=Pavel&sex=M
 Content-Type: application/json
 
