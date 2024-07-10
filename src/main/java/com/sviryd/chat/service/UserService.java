@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,7 +20,21 @@ public class UserService {
     public User save(User user) {
         return userRepo.save(user);
     }
+    public User saveIfNotExists(User user){
+        User userDB = findByUsername(user.getUsername());
+        if (userDB == null) {
+            userDB = save(user);
+        }
+        return userDB;
+    }
 
+    public void delete(User user) {
+        userRepo.delete(user);
+    }
+
+    public Optional<User> findById(Long id){
+        return userRepo.findById(id);
+    }
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
     }

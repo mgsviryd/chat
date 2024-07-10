@@ -1,17 +1,15 @@
 package com.sviryd.chat.controller.rest;
 
 import com.sviryd.chat.domain.User;
+import com.sviryd.chat.domain.resource.UserResource;
 import com.sviryd.chat.domain.type.Gender;
 import com.sviryd.chat.dto.UserDTO;
 import com.sviryd.chat.dto.UsersDTO;
+import com.sviryd.chat.service.AuthenticationService;
 import com.sviryd.chat.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +21,16 @@ import java.util.List;
 
 @RestController
 public class UserRestController {
-    private static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
     private static final String DEFAULT_PASSWORD = "123456";
     private static final Sort BY_CREATION_LDT_DESC = Sort.by("creationLDT").descending();
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final AuthenticationService authenticationService;
 
-    public UserRestController(final PasswordEncoder passwordEncoder, final AuthenticationManager authenticationManager, UserService userService) {
+    public UserRestController(final PasswordEncoder passwordEncoder, final UserService userService, final AuthenticationService authenticationService) {
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/init")
@@ -46,7 +43,7 @@ public class UserRestController {
     }
 
     @PostMapping("/auth")
-    public HashMap<Object, Object> saveAndLogin(
+    public HashMap<Object, Object> saveAndAuthenticateUser(
             @RequestParam(value = "name") String username,
             @RequestParam(value = "sex") Gender gender,
             HttpSession session
@@ -55,14 +52,9 @@ public class UserRestController {
         user.setUsername(username);
         user.setGender(gender);
         user.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
-        User userDB = userService.findByUsername(username);
-        if (userDB == null) {
-            userService.save(user);
-        }
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, DEFAULT_PASSWORD);
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+        userService.saveIfNotExists(user);
+        UserResource credentials = new UserResource(username, DEFAULT_PASSWORD);
+        authenticationService.authenticate(credentials, session);
         HashMap<Object, Object> data = new HashMap<>();
         data.put("result", true);
         return data;

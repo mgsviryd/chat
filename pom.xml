@@ -30,7 +30,7 @@
     <properties>
         <java.version>17</java.version>
         <skipTests>false</skipTests>
-        <skipITs>true</skipITs>
+        <skipITs>false</skipITs>
         <skipUTs>${skipTests}</skipUTs>
     </properties>
 

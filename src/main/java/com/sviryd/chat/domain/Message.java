@@ -48,6 +48,5 @@ public class Message implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime creationLDT = LocalDateTime.now();
 
-    @Column
     private String text;
 }

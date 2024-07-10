@@ -2,9 +2,7 @@ package com.sviryd.chat.provider;
 
 import com.sviryd.chat.domain.User;
 import com.sviryd.chat.service.UserService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 public class AuthProvider implements AuthenticationProvider {
     private PasswordEncoder passwordEncoder;
