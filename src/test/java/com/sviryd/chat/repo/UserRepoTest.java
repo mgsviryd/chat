@@ -4,6 +4,7 @@ import com.sviryd.chat.domain.User;
 import com.sviryd.chat.domain.resource.UserResource;
 import com.sviryd.chat.domain.type.Gender;
 import com.sviryd.chat.domain.type.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class UserRepoTest {
     @BeforeEach
     public void init() {
         user = userRepo.save(getUser());
+    }
+    @AfterEach
+    public void deInit() {
+        userRepo.delete(user);
     }
 
     @Test

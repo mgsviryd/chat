@@ -28,10 +28,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @JsonIgnoreProperties(value = {"authorMessages"})
 @Entity
 @Table(name = "usr", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -57,6 +57,9 @@ public class User implements UserDetails, Serializable {
 
     @Column(nullable = false, columnDefinition = "BIT", length = 1)
     private boolean enabled;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    List<Card> cards = new ArrayList<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

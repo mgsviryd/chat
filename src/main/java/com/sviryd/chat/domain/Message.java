@@ -40,7 +40,6 @@ public class Message implements Serializable {
     @Column(name = "author_id", updatable = false, insertable = false)
     private Long authorId;
 
-
     @Builder.Default
     @CreationTimestamp
     @Convert(converter = LocalDateTimeToTimestampConverter.class)
